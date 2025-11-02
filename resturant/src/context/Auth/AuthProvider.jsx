@@ -1,31 +1,32 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
-import {AuthContext} from "./AuthContext"
-import {useNavigate} from "react-router-dom"
+import { AuthContext } from "./AuthContext";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-
-export  function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);     // user object from backend
+export function AuthProvider({ children }) {
+  const [user, setUser] = useState(null); // user object from backend
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState(null);
- const navigate = useNavigate();
+  const navigate = useNavigate();
 
- //  Normal login (email/password)
+  //  Normal login (email/password)
   const login = async (email, password) => {
-    try{
-   const res = await axios.post("http://localhost:3000/auth/login", { email, password });
-    setUser(res.data.user);
-    setToken(res.data.token);
-    localStorage.setItem("token", res.data.token);
+    try {
+      const res = await axios.post("http://localhost:3000/auth/login", {
+        email,
+        password,
+      });
+      setUser(res.data.user);
+      setToken(res.data.token);
+      localStorage.setItem("token", res.data.token);
       toast.success("Login successful!");
       navigate("/home", { replace: true });
-    }catch(err){
+    } catch (err) {
       console.log(err);
-      alert(err.response.data.message)
+      alert(err.response.data.message);
     }
-    
   };
 
   //  Login with Google
@@ -33,12 +34,14 @@ export  function AuthProvider({ children }) {
     onSuccess: async (response) => {
       const { access_token } = response;
       // Send access token to backend to verify & create user
-      const res = await axios.post("http://localhost:3000/auth/google/callback", {
-        access_token,
-      });
-  
-      
-       setUser(res.data.user);
+      const res = await axios.post(
+        "http://localhost:3000/auth/google/callback",
+        {
+          access_token,
+        }
+      );
+
+      setUser(res.data.user);
       setToken(res.data.token);
       localStorage.setItem("token", res.data.token);
       navigate("/home", { replace: true });
@@ -46,11 +49,23 @@ export  function AuthProvider({ children }) {
     onError: (err) => console.error("Google Login Failed:", err),
   });
   // ✅ Register
-  const register = async ( email,role,userName, password) => {
-    const res = await axios.post("http://localhost:3000/auth/register", { name, email,role,userName, password });
-    setUser(res.data.user);
-    setToken(res.data.token);
-    localStorage.setItem("token", res.data.token);
+  const register = async (email, role, userName, password) => {
+    // console.log(email,role,userName, password);
+    try {
+      const res = await axios.post("http://localhost:3000/auth/register", {
+        email,
+        role,
+        userName,
+        password,
+      });
+      // console.log(res);
+
+      setUser(res.data.user);
+      setToken(res.data.token);
+      localStorage.setItem("token", res.data.token);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   // ✅ Logout
@@ -60,7 +75,7 @@ export  function AuthProvider({ children }) {
     localStorage.removeItem("token");
   };
 
-// ✅ Auto check if logged in
+  // ✅ Auto check if logged in
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     if (storedToken) {
@@ -87,7 +102,7 @@ export  function AuthProvider({ children }) {
         token,
         loading,
         login,
-         register,
+        register,
         loginWithGoogle,
         logout,
         isAdmin: user?.role === "admin",
@@ -96,7 +111,4 @@ export  function AuthProvider({ children }) {
       {children}
     </AuthContext.Provider>
   );
-};
-
-
-
+}

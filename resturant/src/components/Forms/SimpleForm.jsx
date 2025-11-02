@@ -4,8 +4,19 @@ import { getALL } from "../../api/menus";
 import { Form, Button } from "react-bootstrap";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { GetEndpoint } from "../../utils/getEndPoint";
+import { useTranslation } from "../../hooks/useTranslation";
+import {
+  FormWrapper,
+  StyledForm,
+  StyledLabel,
+  StyledInput,
+  StyledSelect,
+  ButtonWrapper,
+  // StyledButton,
+} from "./UserFormStyled";
 
 export default function SimpleForm() {
+  const {  language  } =useTranslation();
   const [menu, setMenu] = useState({
     name: "",
     description: "",
@@ -14,17 +25,23 @@ export default function SimpleForm() {
   });
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log(id);
+  
   const location = useLocation();
   const edPoint = GetEndpoint();
   const resource = location.pathname.split("/")[2];
   const [menus, setMenus] = useState([]);
 
+
   const getitemBYID = async () => {
     try {
+      console.log("here");
+      
       //  console.log(res.data.data);
       if (edPoint === "menuItem") {
         const res = await GetbyID(edPoint, id);
         const typeMenu = await getALL("menu");
+        console.log(res);
         console.log(typeMenu);
         setMenu(res.data.data);
         setMenus(typeMenu.data);
@@ -93,7 +110,7 @@ export default function SimpleForm() {
   };
 
   return (
-    <div className="container mt-5 w-50">
+    <FormWrapper className=" ">
       <h3>
         {id ? "Edit" : "Add"} {edPoint}
       </h3>
@@ -103,7 +120,7 @@ export default function SimpleForm() {
           <Form.Control
             type="text"
             name="name"
-            value={menu.name || ""}
+            value={menu.name[language] || ""}
             onChange={handleChange}
           />
         </Form.Group>
@@ -112,7 +129,7 @@ export default function SimpleForm() {
           <Form.Control
             as="textarea"
             name="description"
-            value={menu.description || ""}
+            value={menu.description[language]  || ""}
             onChange={handleChange}
           />
         </Form.Group>
@@ -156,7 +173,7 @@ export default function SimpleForm() {
           {id ? "Update" : "Add"}
         </Button>
       </Form>
-    </div>
+    </FormWrapper>
   );
 }
 

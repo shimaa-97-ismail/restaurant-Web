@@ -2,10 +2,10 @@ import { Routes, Route, BrowserRouter, useLocation } from "react-router-dom";
 import { Header, UserForm } from "../components";
 import { Login, Home, Beakfast, Dinner, Lanch, Dashboard } from "../pages";
 import { OrderForm } from "../components/Forms/OrderForm";
-// import { ProtectedRoute } from "../components/ProtectedRoute/ProtectedRoute";
+import { ProtectedRoute } from "../components/ProtectedRoute/ProtectedRoute";
 import ALLData from "../components/ALLData/ALLData";
 import SimpleForm from "./../components/Forms/SimpleForm";
-import { AllOrder } from './../components/ALLData/AllOrder';
+import { AllOrder } from "./../components/ALLData/AllOrder";
 
 export function MainLayout() {
   const location = useLocation();
@@ -16,7 +16,15 @@ export function MainLayout() {
       {shouldShowHeader && <Header />}
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Home />} />
+
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Home />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/home" element={<Home />} />
         <Route path="/breakfast" element={<Beakfast />} />
         <Route path="/dinner" element={<Dinner />} />

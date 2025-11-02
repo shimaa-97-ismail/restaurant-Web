@@ -14,6 +14,8 @@ export async function orderByPaybom(updatedItems, clearCart, user) {
   }));
   const orderData = { orderItems, userID, paymentMethod };
   const token = localStorage.getItem("token");
+  console.log(token);
+  
   try {
     const res = await axios.post(
       "http://localhost:3000/order/create",
@@ -25,10 +27,14 @@ export async function orderByPaybom(updatedItems, clearCart, user) {
         },
       }
     );
-  const PAYMOB_IFRAME_ID=import.meta.env.PAYMOB_IFRAME_ID
+    console.log(import.meta.env.VITE_PAYMOB_IFRAME_ID);
+    
+  const PAYMOB_IFRAME_ID=import.meta.env.VITE_PAYMOB_IFRAME_ID
     // if (paymentMethod === "paymob") {
     const iframeUrl = `https://accept.paymob.com/api/acceptance/iframes/${PAYMOB_IFRAME_ID}?payment_token=${res.data.paymentToken}`;
     window.open(iframeUrl, "_blank");
+    console.log(PAYMOB_IFRAME_ID);
+    
     clearCart();
     toast.success("Order Add Successfull");
     clearCart();

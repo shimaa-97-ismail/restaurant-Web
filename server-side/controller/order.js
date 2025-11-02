@@ -21,9 +21,7 @@ async function createOrder(req, res, next) {
     }
 
     for (const item of orderItems) {
-  console.log("item",item);
   
-      
       if (!mongoose.Types.ObjectId.isValid(item.itemId)) {
         return res.status(400).json({ error: `Invalid itemId ${item.itemId}` });
       }
@@ -36,13 +34,13 @@ async function createOrder(req, res, next) {
     }
 
     const order = new orderModel({ userID, orderItems });
-    // console.log(userID, orderItems);
+   
 
     if (!order) {
       throw new AppError("Order data is required", 400);
     }
     const savedOrder = await order.save();
-    console.log("saveds",savedOrder);
+  
 
     // const ordersInDb = await orderModel.find();
     // console.log("All orders in DB:", ordersInDb);

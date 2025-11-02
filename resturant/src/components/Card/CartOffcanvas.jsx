@@ -2,17 +2,33 @@ import Offcanvas from "react-bootstrap/Offcanvas";
 import {BasicButton} from "../../styledComponents"; // your button
 import PropTypes from "prop-types";
 import { useTranslation } from "../../hooks/useTranslation";
-// import styled from "styled-components";
+import styled from "styled-components";
 
-// const OrderSummary = styled.div`
-//   margin-top: 1rem;           /* mt-4 */
-//   padding-top: 1rem;          /* pt-3 */
-//   border-top: 1px solid #dee2e6; /* border-top */
-//   display: flex;
-//   flex-direction: column;
-//   gap: 0.5rem;                /* gap-2 */
-//   direction: ${({ language }) => (language === "ar" ? "rtl" : "ltr")};
-// `;
+const ResponsiveOffcanvas = styled(Offcanvas)`
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+
+
+  @media (max-width: 576px) {
+    width: 100%;
+    /* justify-content: center; */
+    /* align-items: center; */
+    border-radius: 0;
+    padding: 10px;
+  }
+
+   .offcanvas-body {
+    padding: 1rem;
+  }
+
+  .btn {
+    @media (max-width: 576px) {
+      /* width: 100%; */
+      margin-bottom: 0.5rem;
+    } }
+  
+`;
 
 // // Total heading
 // const TotalText = styled.h5`
@@ -34,7 +50,7 @@ total
   const {t,language}=useTranslation();
   // const [paymentMethod,setpaymentMethod]=useState{}
   return (
-    <Offcanvas style={{ direction: language === "ar" ? "rtl" : "ltr"}} show={show} onHide={handleClose} placement="start">
+    <ResponsiveOffcanvas style={{ direction: language === "ar" ? "rtl" : "ltr"}} show={show} onHide={handleClose} placement="start">
       <Offcanvas.Header  closeButton>
         <Offcanvas.Title style={{margin:"auto"}}>{t("cart")}</Offcanvas.Title>
       </Offcanvas.Header>
@@ -105,7 +121,7 @@ total
         Checkout
       </button> */}
       </Offcanvas.Body>
-    </Offcanvas>
+    </ResponsiveOffcanvas>
   );
 };
 

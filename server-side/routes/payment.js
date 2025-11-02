@@ -6,6 +6,8 @@ const router = express.Router();
 router.post("/create-order", async (req, res) => {
   try {
     const { amount, orderId } = req.body; // amount in EGP * 100
+    console.log(amount);
+    
     const apiKey = process.env.PAYMOB_API_KEY;
 
     // Step 1: Get auth token

@@ -4,9 +4,9 @@ import AppError from "../config/appError.js";
 
 async function createMenu(req, res, next) {
   try {
-    console.log("asd");
+    
     const newMenu = req.body;
-    console.log(newMenu); 
+ 
     if (!newMenu) {
       throw new AppError("Menu data is required", 400);
     }

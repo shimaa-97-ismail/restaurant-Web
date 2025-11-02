@@ -1,24 +1,22 @@
-// import { Navigate ,Outlet} from "react-router-dom";
-// import {Header} from "../Header/Header";
-// import {useAuth} from "../../hooks/useAuth";
+import { Navigate ,Outlet} from "react-router-dom";
+import {Header} from "../Header/Header";
+import { AuthContext } from "../../context/Auth/AuthContext";
+import {  useContext } from "react";
 
 
-// export function ProtectedRoute() {
-//    const { user} = useAuth();
+export function ProtectedRoute() {
+   const { user } = useContext(AuthContext);
  
-// //  console.log(user.token ,"from protected");
- 
- 
-//    if (!user?.token) {
-//     return <Navigate to="/login" replace />;
-//   }
-//   return (
-//     <>
-//     <Header />
-//     <Outlet />;
-//     </>
-//   )
-// }
+   if (!user?.token) {
+    return <Navigate to="/login" replace />;
+  }
+  return (
+    <>
+    <Header />
+    <Outlet />;
+    </>
+  )
+}
 
 
 

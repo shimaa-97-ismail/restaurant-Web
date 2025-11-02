@@ -11,18 +11,18 @@ function generateToken(id,role) {
 }
 
 
-// async function saveUser (req, res, next)  {
-//   try {
-//     const newUser = req.body;
-//     if (!newUser) {
-//       throw new AppError("User data is required", 400);
-//     }
-//     const savedUser = await userModel.create(newUser);
-//     res.status(201).json(savedUser);
-//   } catch (err) {
-//     next(err);
-//   }
-// }
+async function saveUser (req, res, next)  {
+  try {
+    const newUser = req.body;
+    if (!newUser) {
+      throw new AppError("User data is required", 400);
+    }
+    const savedUser = await userModel.create(newUser);
+    res.status(201).json(savedUser);
+  } catch (err) {
+    next(err);
+  }
+}
 
 // async function userLogin (req, res, next)  {
 //   try {

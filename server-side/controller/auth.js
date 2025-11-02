@@ -12,15 +12,15 @@ const generateToken = (user) =>
 
 // ✅ Normal signup
 export const register = async (req, res) => {
-  const { name, email, password ,userName,role} = req.body;
-  console.log("her",name);
-  
+  const {  email, password ,userName,role} = req.body;
+    console.log( password );
+    
   try {
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: "Email already exists" });
 
     // const hashed = await bcrypt.hash(password, 10);
-    const user = await User.create({ name, email, password,userName,role });
+    const user = await User.create({  email, password,userName,role });
     const token = generateToken(user);
 
     res.json({ user, jwt: token });
@@ -44,13 +44,13 @@ export const login = async (req, res) => {
     // if (!user.password) {
     //   return res.status(400).json({ message: "This account was created with Google. Please login with Google." });
     // }
-    console.log(user);
+   
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: "Invalid credentials" });
 
     const token = generateToken(user);
-    console.log(token);
+   
     
     res.json({ user, token: token });
   } catch (err) {
@@ -60,10 +60,10 @@ export const login = async (req, res) => {
 //Google login
 export const googleLogin = async (req, res) => {
   try {
-    console.log("fron google login");
+   
     
     const { access_token } = req.body;
-console.log(access_token);
+
 
     // Verify access token using Google API
     const ticket = await client.getTokenInfo(access_token);
@@ -80,7 +80,6 @@ console.log(access_token);
     }
 
    const token = generateToken(user);
-console.log(token);
 
     res.json({ user, token: token });
   } catch (err) {

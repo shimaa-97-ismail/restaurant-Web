@@ -60,8 +60,9 @@ const Content = styled.div`
   padding: 2rem;
  transition: all 0.3s ease;
   @media (max-width: 768px) {
-    width: 100%;
+    width: 100% !important;
     display: flex;
+    flex-direction: column;
     justify-content: center;
    
   }

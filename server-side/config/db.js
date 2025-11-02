@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
+console.log(process.env.DB);
 
-// mongodb://localhost:27017/resturantTarget
 
 export default mongoose
   .connect("mongodb://localhost:27017/resturantTarget", {

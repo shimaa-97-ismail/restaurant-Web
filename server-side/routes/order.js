@@ -23,6 +23,7 @@ router.get('/report/daily-revenue', authorize('admin'),getDailyRenvenue);
 
 router.post("/create", async (req, res) => {
   const { userID, orderItems,paymentMethod } = req.body;
+console.log(orderItems);
 
   // Calculate totals
   let totalPrice = 0;
@@ -53,6 +54,9 @@ try{
       api_key: process.env.PAYMOB_API_KEY,
     });
     const token = authRes.data.token;
+  
+    console.log(totalPrice);
+    
 const orderRes = await axios.post(
       "https://accept.paymob.com/api/ecommerce/orders",
       {
@@ -68,6 +72,7 @@ const orderRes = await axios.post(
       }
     );
      const paymobOrderId = orderRes.data.id;
+
 
     const paymentRes = await axios.post(
       "https://accept.paymob.com/api/acceptance/payment_keys",
@@ -105,6 +110,8 @@ const orderRes = await axios.post(
     //  const paymentToken = paymentRes.data.token;
     //   return res.json({ order, paymentToken });
 //  return paymentRes.data.token;
+
+
     return res.json({ order, paymentToken: paymentRes.data.token });
   }
 

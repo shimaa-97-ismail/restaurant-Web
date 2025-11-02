@@ -6,13 +6,13 @@ import MenuItem from "../models/items.js";
 async function createNewMenuItem(req, res, next) {
   try {
     const newMenuItem = req.body;
-    console.log(newMenuItem);
+   
     
     if (!newMenuItem) {
       throw new AppError("Menu item data is required", 400);
     }
     const savedMenuItem = await MenuItem.create(newMenuItem);
-    console.log(savedMenuItem);
+  
     
     res.status(201).json(savedMenuItem);
   } catch (err) {
@@ -21,7 +21,7 @@ async function createNewMenuItem(req, res, next) {
 }
 
 async function getALLmenuItems(req, res,next) {
-  console.log("in get all");
+  
  const lang = req.headers["accept-language"]?.split(",")[0] || "en";
   try {
     const menuItems = await MenuItem.find()
@@ -30,8 +30,7 @@ async function getALLmenuItems(req, res,next) {
       description: i.description[lang] || i.description.en,
       price: i.price
     }));
-    console.log();
-    
+
     // .populate("menuID", "name");
     res.status(200).json(menuItems);
   } catch (err) {
@@ -60,8 +59,7 @@ async function updatedMenuItem(req, res, next) {
 }
 async function deleteMenuItem(req, res, next) {
   try {
-    console.log("here");
-
+  
     const id = req.params.id;
     if (!id) {
       throw new AppError("ID is required", 400);
@@ -79,20 +77,21 @@ async function deleteMenuItem(req, res, next) {
 
 async function getMenuByName(req, res, next) {
   try {
+    console.log("meue");
+    
     const { name } = req.params;
-    console.log(name);
+  
     // 68f9f10972fe0700f9d38b69
     const Menu = await menuModel.findOne({ name });
-    console.log(Menu);
+  
     
     if (!Menu) {
       throw new AppError("Menu not found", 404);
     }
-    console.log(Menu._id);
+
 
     const Items = await MenuItem.find({ menuID:Menu._id})
-    console.log(Items);
-    
+
     if (!Items) {
       throw new AppError("items not found")
       // console.log(Items.menuID);
@@ -105,15 +104,12 @@ async function getMenuByName(req, res, next) {
   }
 }
 async function getById(req, res, next) {
-  console.log("asdasd");
-  
   try {
     const { id } = req.params;
     if (!id) {
       throw new AppError("ID is required", 400);
     }
     const MenuItemfound = await MenuItem.findOne({ _id: id });
-    console.log(MenuItemfound);
     
     if (!MenuItemfound) {
       throw new AppError("Menu item not found", 404);
